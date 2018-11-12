@@ -1,0 +1,558 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	17/10/2018 - Tidas Tecnologia foi elogiada por João Carlos de Mattos
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	
+	leonardo.borges
+	lb2018
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Regras de arredondamento na Numeração Decimal - Norma ABNT NBR 5891
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Cliente para testes de consulta no SPC - 123.123.123-87
+
+	usar funções do programas.php
+		https://sistema.ocrediario.com.br/release/programas.php?funcao=getKey&id=5d3993b0-83e6-11e6-a6fe-1b2cdf0ce800&senha=t2016i09d26a09s51
+
+	usar funções do modagendadortarefas.php
+		http://leonardo-pc/gcred/modagendadortarefas.php?funcao=enviaSmsAvisoExpiracaoSms
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	https://sistema.ocrediario.com.br/release/programas.php?funcao=getKey&id=173ece80-5531-11e7-89c7-dbfb07d6e971&senha=t2017i06d20a14s55
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	serie
+		dirk gently's holistic detective agency
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	suporte cobre bem x
+		url  -> https://www.atendabem.com/otrs/customer.pl
+		user -> edgard@tidas.com.br
+		pass -> @cGpEaLG
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	quando um operador pegar uma cobrança, ele vai ser o dono da cobrança, até que seja transferido
+	priorizar cobranças de algumas lojas para alguns usuarios
+	tirar da fila
+	colocar na fila
+	agendar horario e dia
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	criar forma de verificar se o cliente teve alguma venda rejeitada pela central - relatorio para vendas nao aprovadas
+
+	criar painel score tambem por ano. (hoje é somente mensal)
+	
+	55% da mensalidade para tidas tecnologia
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	-- SQL que vou usar a lote
+
+           select creditscore.cscid,
+                  creditscore.clicodigo,
+                  creditscore.lojcodigo,
+                  usucodigo,
+                  cscscore,
+                  cscletra,
+                  csclogid,
+                  cscdatahora,
+                  nvvcodigo,
+                  cscnivelacao,
+                  valorparcela,
+                  percentualentrada,
+                  quantidadeparcelas,
+                  valorfinanciado,
+                  tipoplano
+             from creditscore 
+       inner join cscdados on (creditscore.cscid = cscdados.cscid)
+            where creditscore.clicodigo = 188975
+              --and creditscore.lojcodigo = 
+              --and cscdatahora >= '2016-11-04 00:00:00' 
+              --and cscdatahora <= '2016-11-04 18:00:00' 
+         order by cscdatahora
+		 
+		 select * from calculovenda where clicodigo = 1066581 and lojcodigo = 73
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	-- Esse eu vou usar mais a lote ainda
+
+		select creditscore.clicodigo,
+			   creditscore.lojcodigo,
+			   creditscore.cscscoreid,
+			   creditscore.cscdatahora,
+			   creditscore.cscscore,
+			   creditscore.cscletra,
+			   creditscore.cscnivelacao,
+			   cd2.*
+		  from creditscore
+	inner join cscdados on (cscdados.cscid = creditscore.cscid)      
+	inner join creditscore c2 on (c2.csclogid = creditscore.csclogidbase)
+	inner join cscdados cd2 on (cd2.cscid = c2.cscid)      
+		 where creditscore.clicodigo = 2011354
+		   and creditscore.cscdatahora >= '2017-05-09 08:00:00'
+		   and creditscore.cscnivelacao is not null
+		   and cscdados.quantidadeparcelas = 2
+	  order by creditscore.cscdatahora		 
+  
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+			select creditscore.clicodigo as cod_cliente,
+			   creditscore.lojcodigo as cod_loja,
+			   creditscore.cscdatahora as data_hora,
+			   creditscore.cscletra as letra,
+			   creditscore.cscnivelacao as acao,
+			   cscdados.quantidadeparcelas as qtde_parcelas,
+			   cscdados.valorfinanciado as vlr_financiado
+		  from creditscore
+	inner join cscdados on (cscdados.cscid = creditscore.cscid)      
+	inner join creditscore c2 on (c2.csclogid = creditscore.csclogidbase)
+	inner join cscdados cd2 on (cd2.cscid = c2.cscid)      
+		 where creditscore.clicodigo = 2308689
+		   and creditscore.cscdatahora >= '2017-06-06 00:00:00'
+		   and creditscore.cscnivelacao is not null
+		   and cscdados.quantidadeparcelas = 10
+	  order by creditscore.cscdatahora		 
+		 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		---fechamento de acordo quitado	  
+			
+		   select * 
+			 from acordo 
+			where clicodigo = 1545776
+			  and acosituacao = 1
+			  and acocancelado = 0
+					
+		   select * 
+			 from acoparcela
+			where acocodigo = 106931					
+
+		   select *
+			 from acovenparcela 
+			where acocodigo = 106931
+			
+		   select *
+			 from venparcela 
+			where lojcodigo = 35 and vencodigo = 10303 and vpacodigo = 3
+
+		   select * 
+			 from vpaparcial 
+			where lojcodigo = 35 
+			  and vencodigo = 10303 
+			  and vpacodigo = 3
+						  
+		   delete 
+			 from vpaparcial 
+			where lojcodigo = 35 
+			  and vencodigo = 10303 
+			  and vpacodigo = 3
+
+		   select *
+			 from vw_recebimentos
+			where clicodigo = 1545776
+			  and vpadtpagto = '2017-08-07'
+			  
+			select *
+			 from vw_recebimentos
+			where lojcodigo = 35 
+			  and vencodigo = 10303 
+			  and vpacodigo = 3
+		 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	-- Migração de clientes de lojas que encerraram o contrato conosco.
+
+   select cliente.clicodigo,
+          cliente.clicpf,
+          cliente.clinome,
+          cliente.clicep,
+          cliente.cliendereco,
+          cliente.clinumero,
+          cliente.clicomplemento,
+          cliente.clibairro,
+          cliente.clicidade,
+          cliente.cliuf,
+          cliente.clidtnasc,
+          cliente.clinomepai,
+          cliente.clinomemae,
+          cliente.cliemail,
+          cliente.clitelresddd,
+          cliente.clitelres,
+          cliente.clitelcelddd,
+          cliente.clitelcel,
+          cliente.clinomeconj,
+          cliente.clicontatoconjddd,
+          cliente.clicontatoconj,
+          cliemprego.cmenome,
+          cliemprego.cmetelddd,
+          cliemprego.cmetelefone,
+          cliemprego.cmesalbruto
+     from cliente
+left join cliemprego on (cliemprego.clicodigo = cliente.clicodigo)
+    where cliente.lojcodigo in (247,947,90000247)
+       or cliente.clicodigo in (select clicodigo from venda where lojcodigo in (247,947,90000247))
+ order by clinome
+		 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+				  
+	correção de acordos não quitados
+		buscar o recebimento que deu errado na vw_recebimentos para ter os dados necessários para povoar as outras tabelas
+		buscar e deletar o registro gerado na vpa parcial
+		povoar a venparcela com os dados buscados da vw_recebimentos, até que o sql da vw_recebimentos fique igual ao anterior
+		 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+				  
+	* integrações do safety
+		pega os clientes que foram alterados no dia
+		pegar os dados do cliente pelo CPF
+
+		vendas realizadas no dia
+		recebimentos realizados no dia
+		 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	-- Homologação de remessa/retorno caixa
+	
+	enviar email para ( migracao.cef@accesstage.com.br ) com o nome da empresa + migracao caixa no assunto
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Público (não sei o que é)
+	user: administrador
+	pass: *gcred2816
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Leonardo Borges Felipe
+	CPF: 088.140.169-25
+
+	Itaú
+	Ag.: 8483
+	CC.: 14257-9
+
+	Ou 
+
+	Santander 
+	Ag.: 3798
+	CC.: 01057540-7
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	corte total usuário
+		redmine
+		sistema
+		porta
+		email
+		pipedrive
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	firebird
+		gbak –user SYSDBA –pas masterkey 172.16.20.14:c:\dados.fdb c:\backup.fbk
+		
+		gbak –user SYSDBA –pas masterkey C:\startdb.fdb C:\startdb.fsdb
+		
+		C:\Users\borges\Desktop\startdb.fsdb
+		
+		para criar conexão no dbeaver esse enconding é necessáiro => ?encoding=ISO8859_1
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Lançamentos
+		vw_despesa
+			lanavulso
+			despesa
+			landeposito
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	consulta CPF receita
+		https://api.meucrediario.com.br/v1/cadastrocpf/71553495934
+		
+		post
+			header
+				x-api-key: 0d5ae55f-4815-431c-95af-ae29f2b7a38d
+				Content-Type: application/json
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	SQL pra verificar a data do backup do banco
+	
+		select dt_bkp_banco, 
+			   count(1) 
+		  from (  select lojcodigo, 
+						 max(vendata) as dt_bkp_banco 
+					from venda 
+				   where lojcodigo < 1000 
+				group by 1) a  
+	  group by 1
+	  order by 2 desc
+	  limit 1
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	root@ocrediario.com.br
+	gcre9700zxc
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	rodar funcoes no quente
+		hash=....
+		para montar o hash
+			md5(nome da funcao em minusculo - ano mes dia)
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	para atualizar o boleto
+		logar na maquina windows atraves da maquina da amazon
+			administrator
+			ofD4hx-T@i;
+				update no subversion
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+				
+	md5(nome da funcao em minusculo - ano mes dia)
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+	sudo su - ativa o usuario para as alterações
+
+	cat - para visualizar um arquivo
+	mcedit - abre um arquivo
+
+	ls -l -> mostra tudo
+
+	cat /etc/crontab -> caminho para atualização dos fontes no release
+
+	/var/log/httpd -> caminho dos logs
+
+	tail
+
+	redrat
+	
+	halt - desligar
+
+	ntsysv - msconfig
+	
+	service httpd restart
+	
+	/etc/init.d/postgresql-9.6 stop
+	/etc/init.d/postgresql-9.6 start
+	
+	cd /var/www/sites/release/noar-cuidado && svn cleanup && svn up --no-auth-cache --username servidor --password gcred9700zxc /var/www/sites/release/noar-cuidado
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	192.168.0.254
+	Usuário root
+	  Senha tg$
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Reabrir agenda
+		update vpaestorno set lficodigo = null, vpedtpgtocredito = null, vpehrpgtocredito = null where crecodigo in (101620);
+
+		update despesa set desexcluido = 1, crecodigo = null, usucodige = 1623, desdthrexcluido = current_timestamp where crecodigo in (101620);
+
+		update lanavulso set lavexcluido = 1, crecodigo = null, usucodige = 1623, lavdthrexcluido = current_timestamp where crecodigo in (101620);
+
+		update crcparcela set crecodigo = null, crpdtpagto = null, crpvlrpagto = null where crecodigo in (101620);
+
+		update smsenviado set crecodigo = null where crecodigo in (101620);
+
+		delete from recfinanceiro where (empcodigo, reccodigo, reftipo) in (select empcodigo, reccodigo, 'A'::varchar from recarga where crecodigo in (101620));
+
+		update recarga set crecodigo = null where crecodigo in (101620);
+
+		delete from credito where crecodigo in (101620);
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	201711291181882
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	internet
+
+	https://192.168.0.1:10443/manage/dashboard/
+	admin
+	jis@wbj/
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	cameras
+	
+	http://192.168.0.2:8100
+	tidas
+	gcred2816
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	Testar consulta SPC
+	
+	GET - https://api.meucrediario.com.br/v1/spc/11/26340934000166/89160-161
+	url: https://api.meucrediario.com.br/v1/spc/:id/:cpfOuCnpj/:cep
+	Header: x-api-key:0d5ae55f-4815-431c-95af-ae29f2b7a38d
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Admin - email
+	http://www.google.com/a/ocrediario.com.br
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Windows apoio
+	Administrator
+	)5z4b7uxz(
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Servidor local (biometria, delphi...)
+		192.168.0.20
+		usuário: usuario
+		senha: tg$ib7gj@
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Endereço: http://shopping.correios.com.br/
+	Usuário: edgard@tidas.com.br
+	Senha: z1933b29
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	MIUI
+	SnOnNY51
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	senha note duda
+		duda1529
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	servidor 254
+		user root
+		pass tg..
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	olap
+		http://olap.ocrediario.com.br
+		user: admin
+		pass: tg$...
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	cd /opt/pentaho/files/
+		svn up --username borges
+		
+    cd /opt/pentaho/files/ && svn up --username borges
+ 
+		cd teste
+		"gerenciar fonte de dados" -> 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Office
+		user = borges@tidas.onmicrosoft.com
+		pass = Raja3446
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Alterar banco de dados no apache
+		localhost/gcred/programas.php?funcao=alterarBaseApache&base= (nome da base)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Nosso IP fixo externo
+		177.37.95.174
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Ramais
+		IP dos telefones SIP
+			Meu crediario - 192.168.0.189 - 001565d57534
+			       Edgard - 192.168.0.206 - 001565c207fe
+				      Leo - 192.168.0.66  - 001a3f040638
+		
+		SQL para trazer lista de ramais
+			     select ramal,
+						nome
+				   from ramais_tb
+				  where lower(nome) not like '%teste%'
+			   order by ramal
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Licença do Leonardo
+		
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+	Codigo autenticador steam
+		r32547
+		
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	Centrais Telefônicas
+		3CX
+			You can access the 3CX Management console from this URL: https://tidastecnology.3cx.com.br:5001 or via IP: https://177.37.95.174:5001
+			Username: tidas
+			Password: elefante
+			Public IP: 177.37.95.174
+			FQDN: tidastecnology.3cx.com.br
+			License key is: QDPF-YGRM-CCSV-OEOL
+			Copy and paste this information to a secure location! This dialog is displayed only ONE TIME! If you lose this information, you lose access to your installation.
+		
+		Issabel
+			Your Server ID	bxo6z8y15wse23i4qvad9fjtckhgnrpum0l7
+			Company	Tidas Tecnology
+			Country	Brazil
+			City	Rio do Sul	Phone	4735206888
+			Contact Name	Leonardo Borges Felipe
+			Email	borges@tidas.com.br
+			senha Leo1234leo
+			
+			forum
+				usuario leoborges
+				senha leo1234leo
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	ftp tidas
+	user: tidas
+	pass: sitearealocal
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	hospedagem servipa: crediarioservipa.com.br/cpanel
+    user: credi864
+    pass: Pellanda21
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+   case
+	   when ((venda.usucodigo is null) and (venflag.vfgvalor is null) and (venda.lojcodigo < 90000000)) then 'APROVADO'
+	   when ((venda.usucodigo is not null) and (venflag.vfgvalor is null) and (venda.lojcodigo < 90000000)) then 'LOJAAUTORIZA'
+	   when ((venflag.vfgvalor is not null) and (venflag.vfgvalor <> '') and (venda.lojcodigo < 90000000) and (venda.usucodigo is null)) then 'CENTRALAPROVADO'
+	   when ((venflag.vfgvalor is not null) and (venflag.vfgvalor <> '') and (venda.lojcodigo < 90000000) and (venda.usucodigo is not null)) then 'CENTRALLOJAAUTORIZA'
+	   when ((venflag.vfgvalor is not null) and (venflag.vfgvalor <> '') and (venda.lojcodigo > 90000000)) then 'CENTRALADMINISTRACAO'
+	   when ((venflag.vfgvalor is null) and (venda.lojcodigo > 90000000)) then 'ADMINISTRACAO'
+   end as tipoaprovacao,
+   
+	left join venflag on (venflag.lojcodigo = venda.lojcodigo and
+						  venflag.vencodigo        = venda.vencodigo and
+						  venflag.fglcodigo        = 1) 
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
